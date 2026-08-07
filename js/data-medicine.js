@@ -159,3 +159,39 @@ window.MEDICINE_DATA = {
     }
   ]
 };
+
+/* ============================================================
+   V2：症状 → 常备药 映射（用于"症状找药"）
+   ============================================================ */
+(function () {
+  var SYM = {
+    "发烧": ["对乙酰氨基酚", "布洛芬"],
+    "头痛": ["对乙酰氨基酚", "布洛芬"],
+    "牙痛": ["布洛芬"],
+    "痛经": ["布洛芬"],
+    "肌肉关节痛": ["布洛芬", "对乙酰氨基酚"],
+    "感冒": ["复方感冒药"],
+    "鼻塞流涕": ["复方感冒药", "氯雷他定 / 西替利嗪（抗过敏）"],
+    "腹泻": ["口服补液盐 Ⅲ", "蒙脱石散"],
+    "消化不良": ["健胃消食类（如健胃消食片）"],
+    "过敏瘙痒": ["氯雷他定 / 西替利嗪（抗过敏）", "炉甘石洗剂"],
+    "蚊虫叮咬": ["炉甘石洗剂", "驱蚊液 / 防蚊用品"],
+    "烫伤": ["烫伤膏（湿润烧伤膏等）"],
+    "轻度脱水": ["口服补液盐 Ⅲ"],
+    "擦伤破皮": ["碘伏", "医用纱布、绷带、创可贴、胶带"]
+  };
+  window.MEDICINE_SYMPTOMS = SYM;
+  var names = [];
+  for (var k in SYM) {
+    SYM[k].forEach(function (n) { if (names.indexOf(n) === -1) names.push(n); });
+  }
+  window.MEDICINE_SYMPTOM_NAMES = names;
+  if (window.MEDICINE_DATA && window.MEDICINE_DATA.items) {
+    window.MEDICINE_DATA.items.forEach(function (it) {
+      it.symptoms = [];
+      for (var s in SYM) {
+        if (SYM[s].indexOf(it.name) !== -1) it.symptoms.push(s);
+      }
+    });
+  }
+})();

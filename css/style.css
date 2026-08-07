@@ -269,3 +269,96 @@ details summary { cursor: pointer; font-size: 1.1rem; font-weight: 700; min-heig
   width: 100%; min-height: 52px; font-size: 1.1rem; padding: 8px 16px; border: 2px solid var(--primary);
   border-radius: 12px; outline: none; font-family: var(--font); background: #fff;
 }
+
+/* ============================================================
+   V2 新增样式
+   ============================================================ */
+.updated-badge { display: inline-block; background: var(--primary-light); color: var(--primary-dark); border-radius: 999px; padding: 3px 12px; font-size: .85rem; font-weight: 600; margin-left: 8px; }
+
+/* 提醒横幅 */
+.reminder-banner { background: var(--warning-light); border: 2px solid var(--warning); color: #7A5210; border-radius: 12px; padding: 12px 16px; margin: 14px 0; font-weight: 700; display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+.reminder-banner .rb-title { font-size: 1.05rem; }
+.reminder-banner .rb-item { background: #fff; border-radius: 8px; padding: 4px 10px; font-weight: 600; }
+
+/* 买药链接 */
+.buy-links { background: #F7FAFC; border: 1px dashed var(--primary); border-radius: 10px; padding: 10px 12px; margin-top: 8px; }
+.buy-links-title { font-weight: 700; margin-bottom: 6px; font-size: .95rem; }
+.buy-links-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0; }
+.buy-links-note { font-size: .8rem; color: var(--text-light); margin-top: 6px; line-height: 1.5; }
+.btn-sm { min-height: 38px; padding: 4px 14px; font-size: .9rem; border-radius: 8px; }
+
+/* 症状找药 */
+.symptom-box { margin: 12px 0; }
+.symptom-result { margin-top: 10px; }
+.symptom-result .sr-item { border-bottom: 1px dashed var(--line); padding: 10px 0; }
+.symptom-result .sr-item:last-child { border-bottom: none; }
+.in-cabinet { color: var(--ok); font-weight: 700; }
+
+/* 心情日记 */
+.mood-row { display: flex; gap: 10px; margin: 10px 0; }
+.mood-btn { font-size: 2rem; min-height: 64px; min-width: 72px; border: 2px solid var(--line); background: #fff; border-radius: 12px; cursor: pointer; }
+.mood-btn.selected { border-color: var(--green); background: var(--green-light); }
+.mood-chart { width: 100%; max-width: 640px; margin-top: 12px; }
+.mood-legend { font-size: .85rem; color: var(--text-light); }
+.mood-history { font-size: .92rem; color: var(--text-light); }
+
+/* 情绪急救页 */
+.qx-body { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 20px 10px; }
+.qx-soothe { font-size: 1.3rem; font-weight: 700; color: var(--primary-dark); margin: 18px 0; line-height: 1.6; }
+.breath-wrap { width: 220px; height: 220px; margin: 16px auto; position: relative; }
+.breath-circle { width: 140px; height: 140px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #7EC8E3, var(--primary)); position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); transition: transform 1s ease; }
+.breath-circle.phase-in { animation: breathIn 4s ease-out forwards; }
+.breath-circle.phase-hold { animation: breathHold 7s ease forwards; }
+.breath-circle.phase-out { animation: breathOut 8s ease-in forwards; }
+@keyframes breathIn { from { transform: translate(-50%, -50%) scale(.6); } to { transform: translate(-50%, -50%) scale(1); } }
+@keyframes breathHold { from { transform: translate(-50%, -50%) scale(1); } to { transform: translate(-50%, -50%) scale(1); } }
+@keyframes breathOut { from { transform: translate(-50%, -50%) scale(1); } to { transform: translate(-50%, -50%) scale(.6); } }
+.breath-text { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: #fff; font-size: 1.2rem; font-weight: 800; z-index: 2; }
+.breath-phase-label { font-size: 1.1rem; font-weight: 700; color: var(--primary-dark); margin: 6px 0; min-height: 1.6em; }
+.qx-hotline { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px; margin: 14px 0; width: 100%; max-width: 560px; }
+.qx-hotline .big-num { font-size: 2.2rem; font-weight: 900; color: var(--primary); text-decoration: none; display: block; margin: 6px 0; }
+.qx-call-btn { font-size: 1.3rem; min-height: 60px; }
+
+/* 悬浮一键呼救 */
+.float-call { position: fixed; right: 18px; bottom: 18px; z-index: 90; display: flex; flex-direction: column; gap: 8px; }
+.float-call a { min-height: 54px; padding: 10px 18px; border-radius: 999px; color: #fff; text-decoration: none; font-weight: 800; box-shadow: 0 4px 14px rgba(192,57,43,.4); display: inline-flex; align-items: center; gap: 6px; }
+.float-call .call-120 { background: var(--danger); font-size: 1.1rem; }
+.float-call .call-sms { background: #5A6B7B; font-size: .95rem; }
+
+/* 长辈模式 */
+html[data-elder="true"] { font-size: 22px; }
+html[data-elder="true"] .elder-hide { display: none !important; }
+html[data-elder="true"] .module-card .mc-desc,
+html[data-elder="true"] .note-box,
+html[data-elder="true"] .search-hint,
+html[data-elder="true"] .tab-bar { display: none !important; }
+html[data-elder="true"] .hero { padding: 26px 20px; }
+html[data-elder="true"] .hero p { display: none; }
+html[data-elder="true"] .main-nav a { font-size: 1.05rem; }
+html[data-elder="true"] .btn { min-height: 56px; font-size: 1.1rem; }
+
+/* 应急清单勾选 */
+.checklist-progress { margin: 12px 0; }
+.checklist-progress .bar { height: 18px; background: var(--line); border-radius: 999px; overflow: hidden; }
+.checklist-progress .fill { height: 100%; background: var(--green); border-radius: 999px; transition: width .3s ease; }
+.checklist-progress .pct { font-weight: 800; color: var(--green); margin-top: 4px; }
+.checklist-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 1px dashed var(--line); }
+.checklist-item input[type="checkbox"] { width: 24px; height: 24px; min-height: auto; margin-top: 3px; }
+.checklist-item .ci-label { flex: 1; }
+.checklist-item.done .ci-label { text-decoration: line-through; color: var(--text-light); }
+
+/* 家庭共享 */
+.family-panel { background: var(--primary-light); border-radius: var(--radius); padding: 16px 18px; margin-top: 16px; }
+.family-panel .fp-code { font-size: 1.6rem; font-weight: 900; color: var(--primary-dark); letter-spacing: .2em; }
+.family-note { font-size: .85rem; color: var(--text-light); }
+
+/* 语音播报 */
+.speech-btn { display: inline-flex; align-items: center; gap: 6px; }
+.step-hl { background: var(--warning-light); outline: 2px solid var(--warning); border-radius: 6px; }
+
+/* 长辈模式：首页只保留 一键呼救 / 家庭药箱 / 急救搜索 */
+html[data-elder="true"] .module-card.psych { display: none; }
+html[data-elder="true"] .module-card { border-top-width: 10px; }
+html[data-elder="true"] .module-card h2 { font-size: 1.5rem; }
+html[data-elder="true"] .search-hero input[type="search"] { min-height: 60px; font-size: 1.2rem; }
+html[data-elder="true"] .search-hero button { min-height: 60px; font-size: 1.2rem; }

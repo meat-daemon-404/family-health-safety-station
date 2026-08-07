@@ -3,20 +3,42 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="心理健康：情绪自测（PHQ-9 / GAD-7）、正念练习、CBT 想法记录表、心理援助热线。">
+<meta name="description" content="心理健康：情绪自测、情绪急救、心情日记、正念练习、CBT 想法记录表、心理援助热线。">
 <title>心理健康 - 家庭健康与安全守护站</title>
 <script>window.BASE = "../";</script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
 <link rel="stylesheet" href="../css/style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏥</text></svg>">
 </head>
 <body data-page="xinli">
 <div id="site-header"></div>
 
 <main class="container">
-  <h1 class="section-title" style="margin-top:10px">🧠 心理健康</h1>
+  <h1 class="section-title" style="margin-top:10px" data-updated>🧠 心理健康</h1>
   <p class="text-light">先看见情绪，再照顾好自己。以下内容为科普与自助工具，不能替代专业诊断与治疗。</p>
 
   <div class="disclaimer">⚠️ 免责声明：本站内容仅供科普参考，不能替代专业医疗诊断。如出现自伤、自杀念头，请立即拨打 120/110 或心理危机干预热线。</div>
+
+  <div class="card" style="background:var(--danger-light); border:2px solid var(--danger)">
+    <h2 style="color:var(--danger)">💔 现在感觉很糟糕？</h2>
+    <p class="text-light">不用做复杂的测试，直接进"情绪急救"：跟着呼吸动画做 4-7-8 呼吸，旁边就是热线号码。</p>
+    <a class="btn" style="background:var(--danger); color:#fff; font-size:1.2rem; min-height:60px" href="qingxu-jijiu.html">💛 我现在感觉糟透了 → 情绪急救</a>
+  </div>
+
+  <div class="card">
+    <h2>📖 心情日记</h2>
+    <p class="text-light">每天花 10 秒，选一个表情 + 几个关键词，记录今天的心情。</p>
+    <div class="mood-row" id="mood-btns"></div>
+    <label for="mood-note">今天的关键词 / 想说的话（可选）</label>
+    <input type="text" id="mood-note" placeholder="如：睡得很好、工作有点累、和家人吃了饭……">
+    <div class="mt-2"><button type="button" class="btn btn-green" id="mood-save">保存记录</button></div>
+    <div class="mt-2">
+      <span class="chip active" data-days="14" style="cursor:pointer">近14天</span>
+      <span class="chip" data-days="7" style="cursor:pointer">近7天</span>
+      <span class="chip" data-days="30" style="cursor:pointer">近30天</span>
+    </div>
+    <div id="mood-chart"></div>
+    <div id="mood-history" class="mood-history mt-2"></div>
+  </div>
 
   <div class="tab-bar">
     <button type="button" class="tab-btn active" data-tab="tab-quiz">📝 情绪自测</button>
@@ -73,6 +95,7 @@
 
 <div id="site-footer"></div>
 <script src="../js/data-psych.js"></script>
+<script src="../js/storage.js"></script>
 <script src="../js/app-xinli.js"></script>
 <script src="../js/common.js"></script>
 </body>

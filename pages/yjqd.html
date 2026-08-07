@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="家庭应急清单（打印版）：紧急电话、家庭信息、急救包清单、急救要点速查。">
-<title>家庭应急清单（打印版）- 家庭健康与安全守护站</title>
+<meta name="description" content="家庭应急清单（打印版）：交互式核对表、紧急电话、家庭信息、急救要点速查。">
+<title>家庭应急清单 - 家庭健康与安全守护站</title>
 <script>window.BASE = "../";</script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📋</text></svg>">
 <link rel="stylesheet" href="../css/style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏥</text></svg>">
 </head>
 <body data-page="yjqd">
 <div id="site-header"></div>
@@ -15,10 +15,21 @@
 <main class="container">
   <div class="print-only-btn no-print">
     <button type="button" class="btn btn-primary" onclick="window.print()">🖨️ 打印 / 另存为 PDF</button>
-    <p class="text-light mt-2">建议打印后贴在冰箱门或家中显眼处。</p>
+    <p class="text-light mt-2">建议打印后贴在冰箱门或家中显眼处；勾选状态会自动保存在本机。</p>
   </div>
 
+  <h1 class="section-title" style="margin-top:10px" data-updated>📋 家庭应急清单</h1>
+
   <div class="disclaimer">⚠️ 本清单仅供科普参考，不能替代专业医疗诊断。紧急情况请立刻拨打 120（火警 119、报警 110）。</div>
+
+  <section class="card">
+    <h2>✅ 准备进度</h2>
+    <div class="checklist-progress">
+      <div class="bar"><div class="fill" id="cl-fill" style="width:0%"></div></div>
+      <div class="pct" id="cl-pct">已完成 0/13（0%）</div>
+    </div>
+    <div id="checklist"></div>
+  </section>
 
   <section class="card">
     <h2>📞 紧急电话</h2>
@@ -36,22 +47,6 @@
       <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
       <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
     </table>
-  </section>
-
-  <section class="card">
-    <h2>🧰 家庭急救包清单</h2>
-    <ul class="do-list">
-      <li>医用纱布、绷带、创可贴、医用胶带、棉签</li>
-      <li>碘伏（伤口消毒）</li>
-      <li>电子体温计</li>
-      <li>退热镇痛药：对乙酰氨基酚 / 布洛芬（按家庭情况备用）</li>
-      <li>口服补液盐 Ⅲ、蒙脱石散（腹泻备用）</li>
-      <li>抗过敏药：氯雷他定 / 西替利嗪</li>
-      <li>炉甘石洗剂、烫伤膏</li>
-      <li>小剪刀、镊子、手电筒、哨子、口哨（求救）</li>
-      <li>一次性口罩、手套</li>
-      <li>应急联系卡（写清家庭成员信息与紧急电话）</li>
-    </ul>
   </section>
 
   <section class="card">
@@ -73,19 +68,12 @@
     </ul>
   </section>
 
-  <section class="card">
-    <h2>🗓️ 定期检查</h2>
-    <ul class="do-list">
-      <li>每月：检查药品有效期，过期药送回收点或投入红色有害垃圾桶，不随意丢弃。</li>
-      <li>每季度：检查急救包物品是否齐全、电池是否有效。</li>
-      <li>每年：与家人一起演练一次急救流程，重温 120 报地址流程。</li>
-    </ul>
-  </section>
-
   <div class="disclaimer">⚠️ 免责声明：本站内容仅供科普参考，不能替代专业医疗诊断。如遇紧急情况，请立刻拨打 120。</div>
 </main>
 
 <div id="site-footer"></div>
+<script src="../js/storage.js"></script>
+<script src="../js/app-yjqd.js"></script>
 <script src="../js/common.js"></script>
 </body>
 </html>

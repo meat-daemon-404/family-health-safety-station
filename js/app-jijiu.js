@@ -1,5 +1,5 @@
 /* ============================================================
-   急救百科页面逻辑：分类筛选 + 模糊搜索 + 详情弹窗
+   急救百科 V2：分类筛选 + 模糊搜索 + 详情弹窗 + 语音播报 + 短信求助
    ============================================================ */
 (function () {
   "use strict";
@@ -10,21 +10,19 @@
     return [it.title, it.category, it.short, it.icon]
       .concat(it.keywords || [])
       .concat(it.symptoms || [])
-      .concat((it.steps || []).map(function (s) { return s; }))
+      .concat(it.steps || [])
       .join(" ");
   }
-
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
   function filtered() {
     var list = data.slice();
     if (state.cat !== "全部") list = list.filter(function (it) { return it.category === state.cat; });
     if (state.q) list = window.FuzzySearch.search(list, state.q, textOf);
     return list;
-  }
-
-  function esc(s) {
-    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
-      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
-    });
   }
 
   function renderChips() {
@@ -47,7 +45,7 @@
     if (!grid) return;
     var list = filtered();
     if (!list.length) {
-      grid.innerHTML = '<div class="empty-tip">没有找到相关内容，换个关键词试试，例如“烫”“卡喉”“发烧”。</div>';
+      grid.innerHTML = '<div class="empty-tip">没有找到相关内容，换个关键词试试，例如"烫""卡喉""发烧"。</div>';
       return;
     }
     grid.innerHTML = "";
@@ -69,7 +67,64 @@
     });
   }
 
+  /* ---------- 语音播报 ---------- */
+  function speakSteps(steps, lis) {
+    stopSpeak();
+    if (!("speechSynthesis" in window)) { highlightFallback(steps, lis); return; }
+    var i = 0;
+    function next() {
+      if (i >= steps.length) { stopSpeak(); return; }
+      if (lis && lis[i]) {
+        lis.forEach(function (l) { l.classList.remove("step-hl"); });
+        lis[i].classList.add("step-hl");
+      }
+      var ut = new SpeechSynthesisUtterance(steps[i]);
+      ut.lang = "zh-CN";
+      ut.rate = 0.95;
+      ut.onend = function () { i++; next(); };
+      window.speechSynthesis.speak(ut);
+    }
+    next();
+  }
+  function stopSpeak() {
+    if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+    document.querySelectorAll("#fa-modal .step-hl").forEach(function (l) { l.classList.remove("step-hl"); });
+  }
+  function highlightFallback(steps, lis) {
+    var i = 0;
+    var t = setInterval(function () {
+      if (i >= steps.length) { clearInterval(t); return; }
+      lis.forEach(function (l) { l.classList.remove("step-hl"); });
+      if (lis[i]) lis[i].classList.add("step-hl");
+      i++;
+    }, 1200);
+    window.__hlTimer = t;
+  }
+
+  /* ---------- 短信求助 ---------- */
+  function sendSms() {
+    var num = window.ContactStore ? window.ContactStore.get() : "";
+    if (!num) {
+      alert("请先在页面下方的「紧急联系人」设置里填写号码。");
+      return;
+    }
+    var msg = "我需要急救，请帮我拨打 120。";
+    var openSms = function (loc) {
+      if (loc) msg += " 我的大致位置：" + loc;
+      var ios = /iPhone|iPad|iPod/i.test(navigator.userAgent || "");
+      var href = ios ? ("sms:" + num + "&body=" + encodeURIComponent(msg)) : ("sms:" + num + "?body=" + encodeURIComponent(msg));
+      window.location.href = href;
+    };
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (p) {
+        openSms(p.coords.latitude.toFixed(4) + "," + p.coords.longitude.toFixed(4));
+      }, function () { openSms(""); }, { timeout: 8000, maximumAge: 60000 });
+    } else { openSms(""); }
+  }
+
+  /* ---------- 详情弹窗 ---------- */
   function openModal(it) {
+    stopSpeak();
     var mask = document.getElementById("fa-modal");
     if (!mask) return;
     var html = "";
@@ -82,9 +137,16 @@
     (it.symptoms || []).forEach(function (s) { html += '<li>' + esc(s) + '</li>'; });
     html += '</ul>';
 
-    html += '<h3 class="section-title" style="margin-top:16px">急救步骤</h3><ol class="step-list">';
+    html += '<h3 class="section-title" style="margin-top:16px">急救步骤</h3><ol class="step-list" id="modal-steps">';
     (it.steps || []).forEach(function (s) { html += '<li>' + esc(s) + '</li>'; });
     html += '</ol>';
+
+    html += '<div class="buy-links-row">' +
+      '<button type="button" class="btn btn-primary" id="modal-speak">🔊 语音播报步骤</button>' +
+      '<button type="button" class="btn btn-ghost" id="modal-stop">⏹ 停止</button>' +
+      '<button type="button" class="btn btn-green" id="modal-sms">📨 发送求助短信</button>' +
+      '<a class="btn btn-danger" href="tel:120">🚑 拨打 120</a>' +
+      '</div>';
 
     if (it.forbidden && it.forbidden.length) {
       html += '<h3 class="section-title" style="margin-top:16px">禁忌 / 错误做法</h3><ul class="forbid-list">';
@@ -111,12 +173,35 @@
     mask.addEventListener("click", function (e) { if (e.target === mask) closeModal(); });
     document.addEventListener("keydown", function escKey(e) { if (e.key === "Escape") { closeModal(); document.removeEventListener("keydown", escKey); } });
     document.body.style.overflow = "hidden";
+
+    var speak = document.getElementById("modal-speak");
+    if (speak) speak.addEventListener("click", function () {
+      var lis = Array.prototype.slice.call(mask.querySelectorAll("#modal-steps li"));
+      speakSteps(it.steps, lis);
+    });
+    var stop = document.getElementById("modal-stop");
+    if (stop) stop.addEventListener("click", stopSpeak);
+    var sms = document.getElementById("modal-sms");
+    if (sms) sms.addEventListener("click", sendSms);
   }
 
   function closeModal() {
+    stopSpeak();
     var mask = document.getElementById("fa-modal");
     if (mask) mask.classList.remove("show");
     document.body.style.overflow = "";
+  }
+
+  /* ---------- 紧急联系人设置 ---------- */
+  function initContact() {
+    var input = document.getElementById("contact-num");
+    var btn = document.getElementById("contact-save");
+    if (!input || !btn || !window.ContactStore) return;
+    input.value = window.ContactStore.get();
+    btn.addEventListener("click", function () {
+      window.ContactStore.set(input.value);
+      alert("紧急联系人已保存（仅存在本机浏览器）。");
+    });
   }
 
   function render() {
@@ -127,6 +212,7 @@
 
   function init() {
     renderChips();
+    initContact();
     var input = document.getElementById("fa-search");
     if (input) {
       input.addEventListener("input", function () { state.q = input.value; render(); });
@@ -134,6 +220,8 @@
       var q = params.get("q");
       if (q) { input.value = q; state.q = q; }
     }
+    var floatSms = document.getElementById("float-sms");
+    if (floatSms) floatSms.addEventListener("click", function (e) { e.preventDefault(); sendSms(); });
     render();
   }
 

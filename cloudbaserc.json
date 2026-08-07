@@ -9,5 +9,15 @@
         "use": "@cloudbase/framework-plugin-static"
       }
     }
-  }
+  },
+  "functions": [
+    {
+      "name": "family",
+      "timeout": 10,
+      "memorySize": 256,
+      "runtime": "Nodejs20.19",
+      "handler": "index.main"
+    }
+  ],
+  "functionRoot": "cloudfunctions"
 }

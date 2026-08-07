@@ -3,20 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="急救百科：烧烫伤、气道异物、心肺复苏、中暑、溺水等 18 类常见急救场景，含步骤与禁忌，标注权威来源。">
+<meta name="description" content="急救百科：一键呼救、语音播报、离线可用；烧烫伤、气道异物、心肺复苏等 18 类急救场景，标注权威来源。">
 <title>急救百科 - 家庭健康与安全守护站</title>
 <script>window.BASE = "../";</script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚑</text></svg>">
 <link rel="stylesheet" href="../css/style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏥</text></svg>">
 </head>
 <body data-page="jijiu">
 <div id="site-header"></div>
 
 <main class="container">
-  <h1 class="section-title" style="margin-top:10px">🚑 急救百科</h1>
+  <h1 class="section-title" style="margin-top:10px" data-updated>🚑 急救百科</h1>
   <p class="text-light">常见意外的识别与处理步骤。支持模糊搜索（输入"烫"即可找到"烧烫伤"）。</p>
 
   <div class="disclaimer">⚠️ 免责声明：本站内容仅供科普参考，不能替代专业医疗诊断与正规急救培训。如遇紧急情况，请立刻拨打 120。</div>
+
+  <div class="float-call no-print">
+    <a class="call-120" href="tel:120">🚑 一键拨打 120</a>
+    <a class="call-sms" href="#" id="float-sms">📨 求助短信</a>
+  </div>
 
   <input type="search" id="fa-search" class="search-input" placeholder="搜索：烫、卡喉、中暑、溺水、低血糖……" aria-label="搜索急救百科">
   <div class="filter-chips" id="fa-chips"></div>
@@ -26,12 +31,30 @@
 
   <div id="fa-modal" class="modal-mask"></div>
 
+  <section class="card">
+    <h2>📨 紧急联系人（用于"发送求助短信"）</h2>
+    <p class="text-light">短信功能在手机上使用效果最佳：点击后会打开短信应用，自动填好求救内容与大致位置（需授权定位）。号码仅保存在本机浏览器。</p>
+    <div class="buy-links-row">
+      <input type="tel" id="contact-num" placeholder="紧急联系人手机号" style="max-width:260px">
+      <button type="button" class="btn btn-primary btn-sm" id="contact-save">保存</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>📴 离线可用</h2>
+    <p class="text-light">网站支持离线访问：第一次联网打开后，把网站"添加到主屏幕"（手机浏览器菜单），之后无网络也能打开急救内容。</p>
+    <div class="buy-links-row">
+      <a class="btn btn-green" href="yjqd.html">🖨️ 打印版急救速查 / 离线急救包</a>
+    </div>
+  </section>
+
   <div class="disclaimer">⚠️ 免责声明：本站内容仅供科普参考，不能替代专业医疗诊断。如遇紧急情况，请立刻拨打 120。</div>
 </main>
 
 <div id="site-footer"></div>
 <script src="../js/data-firstaid.js"></script>
 <script src="../js/search.js"></script>
+<script src="../js/storage.js"></script>
 <script src="../js/app-jijiu.js"></script>
 <script src="../js/common.js"></script>
 </body>
