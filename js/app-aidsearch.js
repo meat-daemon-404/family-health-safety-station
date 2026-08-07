@@ -46,7 +46,7 @@
     app.auth().signInAnonymously().then(function () {
       status.innerHTML = '<span class="family-note">✅ AI 已就绪（免费）。输入急救问题后点「提问」，约几秒返回。</span>';
     }).catch(function (e) {
-      status.innerHTML = '<span class="family-note">⚠️ 匿名登录失败（可能未在控制台开启匿名登录）：' + esc(e.message) + "</span>";
+      status.innerHTML = '<span class="family-note">⚠️ 云端登录失败：当前域名可能未加入 CloudBase 安全域名（GitHub Pages 镜像暂不支持云端 AI），或未开启匿名登录。请使用主站或联网环境；急救内容仍可直接搜索。' + esc(e.message) + "</span>";
     });
 
     function ask() {

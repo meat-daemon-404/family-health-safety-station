@@ -308,7 +308,7 @@
       if (fam && fam.homeId) { CLOUD.homeId = fam.homeId; pullCloud(); }
       renderFamily();
     }).catch(function (e) {
-      document.getElementById("family-status").innerHTML = '<span class="family-note">匿名登录失败（可能未在控制台开启匿名登录）：' + esc(e.message) + '</span>';
+      document.getElementById("family-status").innerHTML = '<span class="family-note">云端登录失败：当前域名可能未加入 CloudBase 安全域名（GitHub Pages 镜像暂不支持云端同步），或未开启匿名登录；药箱数据仍保存在本机浏览器：' + esc(e.message) + '</span>';
     });
   }
   function renderFamily() {
