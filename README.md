@@ -8,7 +8,7 @@
   - 药品录入 / 编辑 / 删除，有效期与开封日期管理（数据存本机浏览器 localStorage）
   - **智能用药提醒**：为药品设置每日服用时间（如 08:00,20:00），首页与药箱页显示"今天还有 X 种药需要服用"；浏览器通知需授权（页面打开时生效）
   - **症状找药**：按"发烧/头痛/腹泻…"等常见症状，推荐药箱已有药品 + 常备药参考
-  - **家庭共享（CloudBase 云端）**：创建家庭码，家人加入后多设备共用一个药箱
+  - **家庭共享（CloudBase 云端，已上线可用）**：创建家庭码，家人输入家庭码加入，多设备共用一个药箱（匿名登录 + 云函数 + NoSQL 安全规则）
   - **买药链接**：每个药品可一键跳转京东/淘宝搜索（药名自动预填），手机端可打开 App 直达搜索；美团/叮当为"打开 App + 指引"
 - 🧠 **心理健康**
   - PHQ-9 / GAD-7 情绪自测（公共领域官方中文版）
@@ -50,35 +50,48 @@
 │   ├── qingxu-jijiu.html       # 情绪急救
 │   ├── jijiu.html              # 急救百科
 │   └── yjqd.html               # 打印版应急清单
-├── cloudfunctions/family/      # CloudBase 云函数（创建/加入/退出家庭）
+├── cloudfunctions/family/      # CloudBase 云函数（创建/加入/退出/查询家庭）
 └── cloudbaserc.json            # CloudBase 部署配置
 ```
 
-## 家庭共享：CloudBase 控制台配置（一次性）
+## 家庭共享：CloudBase 后端现状（已配置完成 ✅）
 
-云函数与数据库集合已由 CLI 建好，还需在控制台完成两步：
+> 注意：本项目环境的 flexdb 文档数据库把文档字段统一存在 **`data.` 子对象**下，SDK 查询与安全规则都要用 `data.` 前缀（如 `where({"data.homeId": …})`、规则里 `doc.data.members`、`get(...).data.members`）。
 
-1. **开启匿名登录**：进入环境 → 登录授权 → 打开"匿名登录"开关。
-2. **配置数据库安全规则**（环境 → 数据库 → 对应集合 → 权限设置）：
-   - 集合 `homes`：
+已完成的后端配置：
+
+1. **匿名登录**：环境 → 登录授权 → 「匿名登录」已开启。
+2. **云函数调用权限**：环境 → 云函数 → 「权限控制」，默认规则为 `auth != null && auth.loginType != 'ANONYMOUS'`（拒绝匿名调用），已为 `family` 单独放行：
+   ```json
+   { "*": { "invoke": "auth != null && auth.loginType != 'ANONYMOUS'" }, "family": { "invoke": "auth != null" } }
+   ```
+3. **数据库安全规则**（集合 → 权限设置 → 切换到安全规则）：
+   - `homes`：
      ```json
-     { "read": "auth != null && (doc.createdBy == auth.uid || doc.members.indexOf(auth.uid) > -1)", "write": "auth != null && doc.createdBy == auth.uid" }
+     { "read": "auth != null && (doc.data.createdBy == auth.uid || auth.uid in doc.data.members)", "write": "auth != null && doc.data.createdBy == auth.uid" }
      ```
-   - 集合 `medicines`：
+   - `medicines`：
      ```json
-     { "read": "auth != null && get(`database.homes.${doc.homeId}`).data.members.indexOf(auth.uid) > -1", "write": "auth != null && get(`database.homes.${doc.homeId}`).data.members.indexOf(auth.uid) > -1" }
+     { "read": "auth != null && auth.uid in get(`database.homes.${doc.data.homeId}`).data.members", "write": "auth != null && auth.uid in get(`database.homes.${doc.data.homeId}`).data.members" }
      ```
+4. **云函数 `family`**（Node 20）：`createHome / joinHome / leaveHome / getHome`，已部署。Web 匿名用户的 uid 取自 `context.environment.TCB_UUID`（兼容 OPENID / auth.uid / event.uid 多路兜底）。
 
-完成后，药箱页"家庭共享"即可正常创建/加入家庭。
+维护提示：若安全规则/查询改动后不生效，注意 flexdb 的 `data.` 前缀与「权限修改 1~3 分钟、安全规则 2 分钟生效延迟」。
 
 ## 本地运行 / 部署
 
 - 本地：直接双击 `index.html`；云端/PWA/语音/家庭共享为渐进增强，本地 file:// 下家庭共享显示提示
 - 腾讯云 CloudBase 部署：
   ```bash
-  tcb hosting deploy . --env-id fridge-blindbox-d9foky90cf58fa93
-  tcb fn deploy --all   # 部署云函数（family）
+  tcb hosting deploy ./index.html /index.html --env-id fridge-blindbox-d9foky90cf58fa93
+  tcb hosting deploy ./css /css --env-id fridge-blindbox-d9foky90cf58fa93
+  tcb hosting deploy ./js /js --env-id fridge-blindbox-d9foky90cf58fa93
+  tcb hosting deploy ./pages /pages --env-id fridge-blindbox-d9foky90cf58fa93
+  tcb hosting deploy ./manifest.webmanifest /manifest.webmanifest --env-id fridge-blindbox-d9foky90cf58fa93
+  tcb hosting deploy ./sw.js /sw.js --env-id fridge-blindbox-d9foky90cf58fa93
+  tcb fn deploy family --dir cloudfunctions/family --env-id fridge-blindbox-d9foky90cf58fa93 --force
   ```
+  （云函数目录需先 `npm install` 好 `@cloudbase/node-sdk`，node_modules 已在 .gitignore 中）
 
 ## 内容与合规说明
 
