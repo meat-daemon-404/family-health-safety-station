@@ -343,7 +343,7 @@ window.FIRSTAID_DATA = [
   ],
   whenToSeeDoctor: "呕吐腹泻剧烈、发热、血便、脱水（口干、尿少）、意识改变者应尽快就医。",
   sources: [
-    { org: "宁国市人民政府", title: "【卫生健康应急科普】卫生应急知识（一）", url: "https://www.ningguo.gov.cn/OpennessContent/show/3525938.html", date: "2026-03-12" },
+    { org: "中国疾控中心", title: "中国疾控中心专家谈食物中毒", url: "https://niohp.chinacdc.cn/zthd/zybfzxcz/kpjy/201212/t20121217_73130.htm", date: "2012-12-17" },
     { org: "深圳市人民政府", title: "食物中毒的应急处理", url: "https://www.sz.gov.cn/hdjl/ywzsk/jyj/fwxx/xxaqgl/content/mpost_10398415.html", date: "2023-01-29" }
   ]
 },
@@ -501,7 +501,7 @@ window.FIRSTAID_DATA = [
   ],
   whenToSeeDoctor: "意识长时间不恢复、反复晕厥、伴胸痛/心悸/抽搐/外伤，或既往有心脏病、糖尿病者晕厥，应立即拨打 120。",
   sources: [
-    { org: "郑州大学第五附属医院", title: "身边有人晕倒了怎么办", url: "https://www.zzusah.com/2023/yiyuanxinwen_1123/7659.html", date: "2023-11-22" },
+    { org: "阜新市卫生健康委", title: "【家庭急救手册】昏迷和晕厥的急救", url: "https://wsjk.fuxin.gov.cn/content/2019/245879.html", date: "2019-01-14" },
     { org: "腾讯医典", title: "如何治疗晕厥？", url: "https://h5.baike.qq.com/mobile/article.html?docid=so16155300z8albv", date: "2022-02-17" }
   ]
 },
