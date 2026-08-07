@@ -305,7 +305,7 @@
     CLOUD.auth.signInAnonymously().then(function () {
       CLOUD.ready = true;
       var fam = window.FamilyStore.get();
-      if (fam && fam.homeId) { CLOUD.homeId = fam.homeId; }
+      if (fam && fam.homeId) { CLOUD.homeId = fam.homeId; pullCloud(); }
       renderFamily();
     }).catch(function (e) {
       document.getElementById("family-status").innerHTML = '<span class="family-note">匿名登录失败（可能未在控制台开启匿名登录）：' + esc(e.message) + '</span>';
@@ -367,7 +367,7 @@
   }
   function callFamily(params) {
     return CLOUD.app.callFunction({ name: "family", data: params }).then(function (res) {
-      var d = res && res.result;
+      var d = (res && res.result) || res;
       if (!d) throw new Error("云函数无返回");
       if (d.code !== 0) throw new Error(d.msg || "未知错误");
       return d.data || {};
@@ -406,14 +406,12 @@
   }
   function pullCloud() {
     if (!CLOUD.ready || !CLOUD.homeId) return;
-    CLOUD.db.collection("medicines").where({ homeId: CLOUD.homeId }).get().then(function (res) {
+    CLOUD.db.collection("medicines").where({ "data.homeId": CLOUD.homeId }).get().then(function (res) {
       var items = res.data || [];
       var local = Store.load();
-      // 以云端为准重建本地列表（保留未上传到云端的本地记录）
-      var cloudIds = {};
-      items.forEach(function (c) { cloudIds[c._id] = true; });
       var merged = items.map(function (c) {
-        return { id: c.clientId || c._id, _cloud: true, _cloudId: c._id, name: c.name, category: c.category || "其他", quantity: c.quantity || "1", openedDate: c.openedDate || "", expiryDate: c.expiryDate || "", note: c.note || "", reminders: c.reminders || [] };
+        var f = c.data || c;
+        return { id: f.clientId || c._id, _cloud: true, _cloudId: c._id, name: f.name, category: f.category || "其他", quantity: f.quantity || "1", openedDate: f.openedDate || "", expiryDate: f.expiryDate || "", note: f.note || "", reminders: f.reminders || [] };
       });
       local.forEach(function (l) { if (!l._cloud) merged.push(l); });
       Store.save(merged);
