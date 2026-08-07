@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="心理健康：情绪自测（PHQ-9 / GAD-7）、正念练习、CBT 想法记录表、心理援助热线。">
+<title>心理健康 - 家庭健康与安全守护站</title>
+<script>window.BASE = "../";</script>
+<link rel="stylesheet" href="../css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏥</text></svg>">
+</head>
+<body data-page="xinli">
+<div id="site-header"></div>
+
+<main class="container">
+  <h1 class="section-title" style="margin-top:10px">🧠 心理健康</h1>
+  <p class="text-light">先看见情绪，再照顾好自己。以下内容为科普与自助工具，不能替代专业诊断与治疗。</p>
+
+  <div class="disclaimer">⚠️ 免责声明：本站内容仅供科普参考，不能替代专业医疗诊断。如出现自伤、自杀念头，请立即拨打 120/110 或心理危机干预热线。</div>
+
+  <div class="tab-bar">
+    <button type="button" class="tab-btn active" data-tab="tab-quiz">📝 情绪自测</button>
+    <button type="button" class="tab-btn" data-tab="tab-mind">🌿 正念练习</button>
+    <button type="button" class="tab-btn" data-tab="tab-cbt">📋 CBT 练习</button>
+    <button type="button" class="tab-btn" data-tab="tab-hot">📞 心理援助热线</button>
+  </div>
+
+  <section id="panel-quiz">
+    <div class="card">
+      <h2>📝 情绪自测</h2>
+      <p class="text-light">包含两个国际通用的筛查量表：PHQ-9（抑郁）与 GAD-7（焦虑），均为公共领域官方中文版。结果仅供筛查参考，<strong>不能替代专业诊断</strong>。</p>
+
+      <h2 style="margin-top:18px">PHQ-9 抑郁自评</h2>
+      <div class="disclaimer">⚠️ 请根据"过去两周"的情况作答；本量表为筛查工具，筛查阳性不代表确诊，请及时寻求专业评估。</div>
+      <div id="phq9-questions"></div>
+      <button type="button" class="btn btn-green" id="phq9-submit">查看结果</button>
+      <div id="phq9-result"></div>
+
+      <h2 style="margin-top:28px">GAD-7 焦虑自评</h2>
+      <div class="disclaimer">⚠️ 请根据"过去两周"的情况作答；本量表为筛查工具，筛查阳性不代表确诊，请及时寻求专业评估。</div>
+      <div id="gad7-questions"></div>
+      <button type="button" class="btn btn-green" id="gad7-submit">查看结果</button>
+      <div id="gad7-result"></div>
+    </div>
+  </section>
+
+  <section id="panel-mind" style="display:none">
+    <div class="card">
+      <h2>🌿 正念入门练习</h2>
+      <p class="text-light">每天几分钟，练习把注意力带回当下。走神是正常的，不用评判自己。</p>
+      <div id="mindfulness"></div>
+    </div>
+  </section>
+
+  <section id="panel-cbt" style="display:none">
+    <div class="card">
+      <h2>📋 CBT 想法记录表</h2>
+      <div id="cbt"></div>
+    </div>
+  </section>
+
+  <section id="panel-hot" style="display:none">
+    <div class="card">
+      <h2>📞 心理援助热线</h2>
+      <p class="text-light">以下热线来自官方或公益机构，号码请以当地最新信息为准。点击号码可直接拨打。</p>
+      <div id="crisis-note"></div>
+      <div id="hotlines" class="mt-2"></div>
+    </div>
+  </section>
+
+  <div class="disclaimer">⚠️ 免责声明：本站内容仅供科普参考，不能替代专业医疗诊断。如遇紧急情况，请立刻拨打 120。</div>
+</main>
+
+<div id="site-footer"></div>
+<script src="../js/data-psych.js"></script>
+<script src="../js/app-xinli.js"></script>
+<script src="../js/common.js"></script>
+</body>
+</html>

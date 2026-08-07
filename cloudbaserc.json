@@ -1,0 +1,13 @@
+{
+  "$schema": "https://static.cloudbase.net/cli/cloudbaserc.schema.json",
+  "envId": "fridge-blindbox-d9foky90cf58fa93",
+  "region": "ap-shanghai",
+  "framework": {
+    "name": "static",
+    "plugins": {
+      "client": {
+        "use": "@cloudbase/framework-plugin-static"
+      }
+    }
+  }
+}
