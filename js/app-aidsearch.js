@@ -62,7 +62,9 @@
       status.innerHTML = '<span class="family-note">当前为镜像/第三方域名，可能未加入 CloudBase 安全域名：云端 AI 若不可用，请使用主站 <a href="https://fridge-blindbox-d9foky90cf58fa93-1463452526.tcloudbaseapp.com/pages/jijiu.html" target="_blank" rel="noopener">tcloudbaseapp.com 主站</a>。仍可先尝试提问。</span>';
     }
     app.auth().signInAnonymously().then(function () {
-      status.innerHTML = '<span class="family-note">✅ AI 已就绪（免费）。输入急救问题后点「提问」，约几秒返回。</span>';
+      if (isSafeHost()) {
+        status.innerHTML = '<span class="family-note">✅ AI 已就绪（免费）。输入急救问题后点「提问」，约几秒返回。</span>';
+      }
     }).catch(function (e) {
       status.innerHTML = '<span class="family-note">⚠️ 云端登录失败：当前域名可能未加入 CloudBase 安全域名（GitHub Pages 镜像暂不支持云端 AI），或未开启匿名登录。请使用主站或联网环境；急救内容仍可直接搜索。' + esc(e.message) + "</span>";
     });
