@@ -1,5 +1,5 @@
 /* 家庭健康与安全守护站 - Service Worker（离线可用） */
-var CACHE = "hfs-v2-cache";
+var CACHE = "hfs-v3-cache";
 var ASSETS = [
   "./",
   "./index.html",
@@ -14,6 +14,7 @@ var ASSETS = [
   "./js/data-medicine.js",
   "./js/data-psych.js",
   "./js/app-jijiu.js",
+  "./js/app-aidsearch.js",
   "./js/app-yixiang.js",
   "./js/app-xinli.js",
   "./js/app-qingxu.js",

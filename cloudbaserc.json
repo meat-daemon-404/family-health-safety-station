@@ -17,6 +17,13 @@
       "memorySize": 256,
       "runtime": "Nodejs20.19",
       "handler": "index.main"
+    },
+    {
+      "name": "aidsearch",
+      "timeout": 60,
+      "memorySize": 256,
+      "runtime": "Nodejs20.19",
+      "handler": "index.main"
     }
   ],
   "functionRoot": "cloudfunctions"

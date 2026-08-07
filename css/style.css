@@ -362,3 +362,8 @@ html[data-elder="true"] .module-card { border-top-width: 10px; }
 html[data-elder="true"] .module-card h2 { font-size: 1.5rem; }
 html[data-elder="true"] .search-hero input[type="search"] { min-height: 60px; font-size: 1.2rem; }
 html[data-elder="true"] .search-hero button { min-height: 60px; font-size: 1.2rem; }
+/* AI 急救问答 */
+.ai-answer { margin-top: 12px; background: #f4f9ff; border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; }
+.ai-answer .ai-line { line-height: 1.75; padding: 3px 0; }
+.ai-answer .ai-line:first-child { font-weight: 700; }
+@media print { .ai-answer { display: none; } }
