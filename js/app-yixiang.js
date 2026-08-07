@@ -290,6 +290,10 @@
   function initFamily() {
     var panel = document.getElementById("family-panel");
     if (!panel) return;
+    if (location.protocol === "file:") {
+      document.getElementById("family-status").innerHTML = '<span class="family-note">当前为本地模式（file://）：家庭共享需在联网网页中使用；药箱数据仍保存在本机浏览器。</span>';
+      return;
+    }
     if (!window.cloudbase) {
       document.getElementById("family-status").innerHTML = '<span class="family-note">云端共享需联网环境（https）。当前为本地模式。</span>';
       return;

@@ -31,8 +31,13 @@
     var answer = document.getElementById("ai-answer");
     if (!input || !btn || !status || !answer) return;
 
+    if (location.protocol === "file:") {
+      status.innerHTML = '<span class="family-note">当前为本地模式（file://）：AI 问答需在联网网页（https）中使用；下方急救百科与模糊搜索仍可正常使用。</span>';
+      btn.disabled = true;
+      return;
+    }
     if (!window.cloudbase) {
-      status.innerHTML = '<span class="family-note">⚠️ AI 问答需要联网环境。当前为本地打开（file://），请在部署后的网页（https）中使用；急救内容仍可直接在下方搜索。</span>';
+      status.innerHTML = '<span class="family-note">⚠️ AI 问答需要联网环境。请在部署后的网页（https）中使用；急救内容仍可直接在下方搜索。</span>';
       btn.disabled = true;
       return;
     }
