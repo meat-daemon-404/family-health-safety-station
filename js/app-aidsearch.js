@@ -15,7 +15,17 @@
     });
   }
 
-  function renderAnswer(box, text) {
+
+  function isSafeHost() {
+    var h = location.hostname || "";
+    if (!h) return false;
+    if (h === "localhost" || h === "127.0.0.1") return true;
+    return h === "fridge-blindbox-d9foky90cf58fa93-1463452526.tcloudbaseapp.com"
+      || h.endsWith(".tcloudbaseapp.com")
+      || h.endsWith(".webapps.tcloudbase.com");
+  }
+
+    function renderAnswer(box, text) {
     var lines = String(text || "").split(/\r?\n/);
     box.innerHTML = lines.map(function (l) {
       var t = l.trim();
@@ -48,6 +58,9 @@
       btn.disabled = true;
       return;
     }
+    if (!isSafeHost()) {
+      status.innerHTML = '<span class="family-note">当前为镜像/第三方域名，可能未加入 CloudBase 安全域名：云端 AI 若不可用，请使用主站 <a href="https://fridge-blindbox-d9foky90cf58fa93-1463452526.tcloudbaseapp.com/pages/jijiu.html" target="_blank" rel="noopener">tcloudbaseapp.com 主站</a>。仍可先尝试提问。</span>';
+    }
     app.auth().signInAnonymously().then(function () {
       status.innerHTML = '<span class="family-note">✅ AI 已就绪（免费）。输入急救问题后点「提问」，约几秒返回。</span>';
     }).catch(function (e) {
@@ -72,7 +85,8 @@
         renderAnswer(answer, r.data.answer);
         status.innerHTML = '<span class="family-note">✅ 回答仅供参考；如遇紧急情况请直接拨打 120。</span>';
       }).catch(function (e) {
-        status.innerHTML = '<span class="family-note">⚠️ AI 问答失败：' + esc(e.message) + "（请检查联网或云端部署；可在下方继续搜索急救百科）</span>";
+        var emsg = (e && e.message) ? e.message : "网络受限或域名未加入 CloudBase 安全域名（镜像站不可用）";
+        status.innerHTML = '<span class="family-note">⚠️ AI 问答失败：' + esc(emsg) + '。可稍后重试或使用主站；急救内容仍可在下方搜索。</span>';
       }).finally(function () {
         busy = false;
         btn.disabled = false;
