@@ -3,8 +3,13 @@
    仅用于科普问答，不能替代专业医疗诊断；紧急情况请拨打 120。
    部署后需在控制台「云函数 → 权限控制」放行匿名调用（invoke: auth != null）。 */
 const tcb = require("@cloudbase/node-sdk");
-const app = tcb.init({ env: tcb.SYMBOL_CURRENT_ENV });
-const ai = app.ai();
+let app = null, ai = null, initErr = "";
+try {
+  app = tcb.init({ env: tcb.SYMBOL_CURRENT_ENV || "" });
+  ai = app.ai();
+} catch (e) {
+  initErr = (e && e.message) ? e.message : String(e);
+}
 const MODEL = "hy3";
 
 const SYSTEM_PROMPT =
@@ -19,6 +24,7 @@ const SYSTEM_PROMPT =
 
 exports.main = async (event, context) => {
   try {
+    if (!ai) return { code: 500, msg: "AI 初始化失败：" + (initErr || "未知错误") };
     const q = String((event && event.q) || "").trim();
     if (!q) return { code: 400, msg: "请先输入要查询的急救问题" };
     if (q.length > 200) return { code: 400, msg: "问题太长了，请精简到 200 字以内" };
