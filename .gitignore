@@ -1,3 +1,18 @@
+# Dependencies & build
 node_modules/
 cloudfunctions/*/node_modules/
-memory/
+dist/
+build/
+
+# Environment & secrets
+.env
+.env.*
+*.key
+*.pem
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
