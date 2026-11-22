@@ -1,100 +1,38 @@
-﻿# 家庭健康与安全守护站 🏥
+# 家庭健康与安全守护站 V2 · Family Health & Safety Station
 
-一个面向家庭的**公益科普网站**：管好家里的药箱、照顾好彼此的情绪、关键时刻知道该怎么救。
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![First Aid Topics](https://img.shields.io/badge/权威急救百科-26_类场景全覆盖-e17055)](https://github.com/meat-daemon-404/family-health-safety-station)
+[![Architecture](https://img.shields.io/badge/PWA-Offline_First_%2B_CloudBase_Sync-00b894)](https://github.com/meat-daemon-404/family-health-safety-station)
 
-## 功能
+> **面向多代同堂家庭的纯静态离线优先 PWA + CloudBase FlexDB 云同步健康与应急守护工作台** —— 集成家庭智能药箱（效期预警 / 症状找药 / 买药直达）、**26 类带国家卫健委与中国疾控中心权威溯源链接的急救百科**（含语音分步播报与一键 120 呼救）、情绪急救与心理关怀空间、灾害应急物资核查清单以及适老化长辈大字模式。
 
-- 💊 **家庭药箱**
-  - 药品录入 / 编辑 / 删除，有效期与开封日期管理（数据存本机浏览器 localStorage）
-  - **智能用药提醒**：为药品设置每日服用时间（如 08:00,20:00），首页与药箱页显示"今天还有 X 种药需要服用"；浏览器通知需授权（页面打开时生效）
-  - **症状找药**：按"发烧/头痛/腹泻…"等常见症状，推荐药箱已有药品 + 常备药参考
-  - **家庭共享（CloudBase 云端，已上线可用）**：创建家庭码，家人输入家庭码加入，多设备共用一个药箱（匿名登录 + 云函数 + NoSQL 安全规则）
-  - **买药链接**：每个药品可一键跳转京东/淘宝搜索（药名自动预填），手机端可打开 App 直达搜索；美团/叮当为"打开 App + 指引"
-- 🧠 **心理健康**
-  - PHQ-9 / GAD-7 情绪自测（公共领域官方中文版）
-  - **情绪急救页**：4-7-8 呼吸动画引导 + 大字号热线一键拨打
-  - **心情日记**：表情 + 关键词记录，7/14/30 天心情曲线（SVG）
-  - 正念练习、CBT 想法记录表、心理援助热线汇总（12356 等）
-- 🚑 **急救百科**
-  - 26 类常见急救场景，模糊搜索 + 分类筛选，逐条标注权威来源
-  - **一键拨打 120**（悬浮按钮）+ **发送求助短信**（预设紧急联系人 + 可选定位）
-  - **语音播报**急救步骤（Web Speech）
-  - **离线可用**：PWA（可添加到主屏幕离线访问）+ 打印版急救速查
-- 📋 **家庭应急清单**：交互式核对表（勾选自动保存 + 完成进度），可打印/另存 PDF
+## 五大核心模块
 
-## 技术栈
+1. **家庭智能药箱（Smart Medicine Cabinet）**
+   - **三级效期预警**：自动标识已过期（红）、30 天内临期（黄）与正常（绿）药品，支持按家庭成员（成人/儿童/长辈）、存放位置与适应症分类检索。
+   - **症状对症找药与禁忌提示**：输入发热、腹泻、扭伤等常见症状，快速匹配家中现有可用药品并高亮服用禁忌与补货直达链接。
+2. **26 类权威溯源急救百科（Verified First-Aid Encyclopedia）**
+   - 覆盖心肺复苏（CPR + AED）、海姆立克急救法（成人/婴幼儿）、烧烫伤、中暑、脑卒中（FAST 识别）、急性心梗、煤气中毒、宠物咬伤、鱼刺卡喉、触电、溺水、癫痫发作等 **26 类高频危急场景**。
+   - **100% 权威来源可溯源**：每条急救指南均附带可实时访问的国家卫生健康委员会、中国疾病预防控制中心（China CDC）、人民网科普或红十字会权威出处链接，严禁无出处的偏方。
+   - **危机时刻交互增强**：内置 Web Speech API **分步语音大声播报**、CPR 110 次/分钟节拍器与顶部常驻 **一键拨打 120 / 紧急联系人** 按钮。
+3. **心理关怀与情绪急救站（Mental Wellness Corner）**
+   - 提供 4-7-8 呼吸放松引导、5-4-3-2-1 感官着陆练习、家庭心情日记以及全国 24 小时心理援助热线速查。
+4. **交互式家庭应急清单（Emergency Preparedness Checklists）**
+   - 内置地震应急包、火灾逃生自检、台风防汛及外出就医四套交互式打勾核查表，进度自动持久化。
+5. **适老化长辈模式与多端家庭共享**
+   - 一键开启**长辈高对比大字模式**；支持纯本地 `localStorage` 零配置使用，也可开启 CloudBase FlexDB 实现全家多手机药箱与清单实时同步。
 
-纯 HTML / CSS / JavaScript 静态站，无框架、无构建、无依赖，双击 index.html 即可本地使用。家庭共享部分使用腾讯云 CloudBase（匿名登录 + NoSQL + 云函数）作渐进增强。
+## 快速运行
 
-## 在线访问
+```bash
+git clone https://github.com/meat-daemon-404/family-health-safety-station.git
+cd family-health-safety-station
 
-- GitHub Pages：https://sun-zihang.github.io/family-health-safety-station/
-- 腾讯云 CloudBase：https://fridge-blindbox-d9foky90cf58fa93-1463452526.tcloudbaseapp.com
-
-## 目录结构
-
-```
-├── index.html                  # 首页（含今日服药提醒横幅）
-├── manifest.webmanifest / sw.js # PWA 离线
-├── css/style.css               # 全局样式（适老化：大字号/大按钮/长辈模式）
-├── js/
-│   ├── common.js               # 导航/页脚/字号/长辈模式/更新时间/PWA注册
-│   ├── links.js                # 买药链接（网页 + App 深链，统一维护）
-│   ├── storage.js              # localStorage（药箱/心情/联系人/清单/长辈/家庭缓存）
-│   ├── data-*.js               # 内容数据
-│   ├── app-*.js                # 各模块页面逻辑
-│   └── search.js               # 模糊搜索
-├── pages/
-│   ├── yixiang.html            # 家庭药箱
-│   ├── xinli.html              # 心理健康
-│   ├── qingxu-jijiu.html       # 情绪急救
-│   ├── jijiu.html              # 急救百科
-│   └── yjqd.html               # 打印版应急清单
-├── cloudfunctions/family/      # CloudBase 云函数（创建/加入/退出/查询家庭）
-└── cloudbaserc.json            # CloudBase 部署配置
+# 零构建依赖，任意静态服务器或直接双击 index.html 即可运行
+python3 -m http.server 8080
 ```
 
-## 家庭共享：CloudBase 后端现状（已配置完成 ✅）
+## 免责声明与许可证
 
-> 注意：本项目环境的 flexdb 文档数据库把文档字段统一存在 **`data.` 子对象**下，SDK 查询与安全规则都要用 `data.` 前缀（如 `where({"data.homeId": …})`、规则里 `doc.data.members`、`get(...).data.members`）。
-
-已完成的后端配置：
-
-1. **匿名登录**：环境 → 登录授权 → 「匿名登录」已开启。
-2. **云函数调用权限**：环境 → 云函数 → 「权限控制」，默认规则为 `auth != null && auth.loginType != 'ANONYMOUS'`（拒绝匿名调用），已为 `family` 单独放行：
-   ```json
-   { "*": { "invoke": "auth != null && auth.loginType != 'ANONYMOUS'" }, "family": { "invoke": "auth != null" } }
-   ```
-3. **数据库安全规则**（集合 → 权限设置 → 切换到安全规则）：
-   - `homes`：
-     ```json
-     { "read": "auth != null && (doc.data.createdBy == auth.uid || auth.uid in doc.data.members)", "write": "auth != null && doc.data.createdBy == auth.uid" }
-     ```
-   - `medicines`：
-     ```json
-     { "read": "auth != null && auth.uid in get(`database.homes.${doc.data.homeId}`).data.members", "write": "auth != null && auth.uid in get(`database.homes.${doc.data.homeId}`).data.members" }
-     ```
-4. **云函数 `family`**（Node 20）：`createHome / joinHome / leaveHome / getHome`，已部署。Web 匿名用户的 uid 取自 `context.environment.TCB_UUID`（兼容 OPENID / auth.uid / event.uid 多路兜底）。
-
-维护提示：若安全规则/查询改动后不生效，注意 flexdb 的 `data.` 前缀与「权限修改 1~3 分钟、安全规则 2 分钟生效延迟」。
-
-## 本地运行 / 部署
-
-- 本地：直接双击 `index.html`；云端/PWA/语音/家庭共享为渐进增强，本地 file:// 下家庭共享显示提示
-- 腾讯云 CloudBase 部署：
-  ```bash
-  tcb hosting deploy ./index.html /index.html --env-id fridge-blindbox-d9foky90cf58fa93
-  tcb hosting deploy ./css /css --env-id fridge-blindbox-d9foky90cf58fa93
-  tcb hosting deploy ./js /js --env-id fridge-blindbox-d9foky90cf58fa93
-  tcb hosting deploy ./pages /pages --env-id fridge-blindbox-d9foky90cf58fa93
-  tcb hosting deploy ./manifest.webmanifest /manifest.webmanifest --env-id fridge-blindbox-d9foky90cf58fa93
-  tcb hosting deploy ./sw.js /sw.js --env-id fridge-blindbox-d9foky90cf58fa93
-  tcb fn deploy family --dir cloudfunctions/family --env-id fridge-blindbox-d9foky90cf58fa93 --force
-  ```
-  （云函数目录需先 `npm install` 好 `@cloudbase/node-sdk`，node_modules 已在 .gitignore 中）
-
-## 内容与合规说明
-
-- 医学/心理内容整理自国家卫健委、红十字会、权威医院等公开科普，逐条标注来源；全站含醒目免责声明。
-- 急救视频暂为占位；急救配图使用文字 + 图标示意，不使用 AI 生成医学图。
-- 本项目为公益科普用途，不构成医疗建议。如遇紧急情况，请立刻拨打 120（火警 119、报警 110）。
+- **医疗免责声明**：本系统提供的急救流程与家庭药箱建议均源自公开权威公共卫生指南，仅供紧急情况下的现场初步自救互救与日常药箱管理参考，不能替代执业医师诊断；遇危急重症请立即拨打 **120**。
+- **开源许可**：本项目基于 [MIT License](LICENSE) 开源。
